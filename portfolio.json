@@ -1,0 +1,70 @@
+{
+  "items": [
+    {
+      "class": "grid-item grid-item3",
+      "src": "1.jp",
+      "caption": "ygugu",
+      "category": "category2"
+    },
+    {
+      "class": "grid-item grid-item3",
+      "src": "1.jp",
+      "caption": "ygugu",
+      "category": "category2"
+    },
+    {
+      "class": "grid-item grid-item3",
+      "src": "1.jp",
+      "caption": "ygugu",
+      "category": "category2"
+    },
+    {
+      "class": "grid-item grid-item3",
+      "src": "1.jpg",
+      "caption": "dxd",
+      "category": "category2"
+    },
+    {
+      "class": "grid-item grid-item3",
+      "src": "1.jpg",
+      "caption": "dxd",
+      "category": "category2"
+    },
+    {
+      "class": "grid-item grid-item3",
+      "src": "2.jpg",
+      "caption": "ygugu",
+      "category": "category2"
+    },
+    {
+      "class": "grid-item",
+      "src": "vyugvugvt",
+      "caption": "EFW",
+      "category": "tftfyt"
+    },
+    {
+      "class": "grid-item grid-item3",
+      "src": "1.jpg",
+      "caption": "EFW",
+      "category": "category2"
+    }
+  ],
+  "filters": [
+    {
+      "name": "Category 1",
+      "category": "category1"
+    },
+    {
+      "name": "Category 2",
+      "category": "category2"
+    },
+    {
+      "name": "Category 3",
+      "category": "category3"
+    },
+    {
+      "name": "Category 4",
+      "category": "category4"
+    }
+  ]
+}

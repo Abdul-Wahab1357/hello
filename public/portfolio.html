@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom Responsive Masonry Grid</title>
+    <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css"
+  />
+    <style>
+        .filters { margin-top: 20px; }
+        .filter-button { margin-right: 10px; cursor: pointer; }
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        .grid {
+            margin: 0 auto;
+            padding: 10px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px; /* Add spacing between items */
+            justify-content: center;
+            align-items: center;
+        }
+
+        .grid-item {
+            position: relative;
+            width: 100%;
+            margin-bottom: 10px;
+            overflow: hidden; /* Ensure overlay doesn't exceed item boundaries */
+        }
+
+        .grid-item img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .grid-item:hover .overlay {
+            opacity: 1; /* Show overlay on hover */
+        }
+
+        .overlay .plus-sign {
+            color: white;
+            font-size: 2rem; /* Adjust size as needed */
+            font-weight: bold;
+            text-align: center;
+        }
+
+        /* Styles for 1 column layout */
+        @media (max-width: 767px) {
+            .grid-item {
+                width: 100%; /* Full width for one column */
+            }
+        }
+
+        /* Styles for 2 columns layout */
+        @media (min-width: 768px) and (max-width: 1023px) {
+            .grid-item {
+                width: 100%; /* Two columns with some spacing */
+            }
+            .grid-item2 {
+                width: 49% !important; /* Two columns with some spacing */
+            }
+            .grid-item3 {
+                width: 49% !important; /* Two columns with some spacing */
+            }
+        }
+
+        /* Styles for 3 columns layout */
+        @media (min-width: 1024px) {
+            .grid-item {
+                width: 100%; /* Three columns with some spacing */
+            }
+            .grid-item2 {
+                width: 49%; /* Two columns with some spacing */
+            }
+            .grid-item3 {
+                width: 30%; /* Three columns with some spacing */
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="filters" id="filters-container"></div>
+    <div  id="grid-container" class="grid">
+       <!-- add images dynamically here -->
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js"></script>
+    <script>
+        Fancybox.bind("[data-fancybox]", {
+      // Your custom options
+    });
+      </script>
+    <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var grid = document.querySelector('.grid');
+            var msnry = new Masonry(grid, {
+                itemSelector: '.grid-item .grid-item2 .grid-item3',
+                columnWidth: '.grid-item .grid-item2 .grid-item3',
+                percentPosition: true
+            });
+        });
+    </script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+    fetch('/portfolio-data')  // Updated to the correct route
+        .then(response => response.json())
+        .then(data => {
+            const { items, filters } = data;
+
+            const container = document.getElementById('grid-container');
+            const filtersContainer = document.getElementById('filters-container');
+
+            // Generate filter buttons
+            const filterButtonsHTML = filters.map(filter => `
+                <button class="filter-button" data-category="${filter.category}">${filter.name}</button>
+            `).join('');
+
+            filtersContainer.innerHTML = filterButtonsHTML;
+
+            // Generate grid items
+            const gridItemsHTML = items.map(item => `
+                <a class="${item.class}" href="images/landing-page-images/${item.src}" data-fancybox="gallery" data-caption="${item.caption}" data-category="${item.category}">
+                    <img src="images/landing-page-images/${item.src}" alt="${item.caption}">
+                    <div class="overlay">
+                        <div class="plus-sign">+</div>
+                    </div>
+                </a>
+            `).join('');
+
+            container.innerHTML = gridItemsHTML;
+
+            // Get category from URL parameters
+            const urlParams = new URLSearchParams(window.location.search);
+            const categoryFromUrl = urlParams.get('category') || filters[0].category;  // Default to first filter if no category in URL
+
+            // Apply filter based on URL parameter
+            filterItems(categoryFromUrl);
+
+            // Filter functionality
+            const filterButtons = document.querySelectorAll('.filter-button');
+            filterButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const category = button.getAttribute('data-category');
+                    filterItems(category);
+                    // Update URL parameter
+                    history.pushState(null, '', `?category=${category}`);
+                });
+            });
+
+            function filterItems(category) {
+                document.querySelectorAll('.grid-item').forEach(item => {
+                    if (category === '' || item.getAttribute('data-category') === category) {
+                        item.style.display = 'block';
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+            }
+        })
+        .catch(error => console.error('Error fetching JSON data:', error));
+});
+
+</script>
+
+
+</body>
+</html>

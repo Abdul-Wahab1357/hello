@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add New Item</title>
+</head>
+<body>
+    <h1>Add New Item to Grid</h1>
+    <!-- <form id="addItemForm">
+        <label for="href">Class:</label>
+        <input type="text" id="class" name="class" required><br><br>
+
+        <label for="href">Image Name</label>
+        <input type="text" id="src" name="src" required><br><br>
+
+        <label for="caption">Caption:</label>
+        <input type="text" id="caption" name="caption" required><br><br>
+
+        <label for="alt">Alt Text:</label>
+        <input type="text" id="alt" name="alt" required><br><br>
+
+        <label for="category">Category:</label>
+        <input type="text" id="category" name="category" required><br><br>
+
+        <button type="submit">Add Item</button>
+    </form>
+
+    <script>
+        document.getElementById('addItemForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const formData = {
+                class: document.getElementById('class').value,
+                src: document.getElementById('src').value,
+                caption: document.getElementById('caption').value,
+                alt: document.getElementById('alt').value,
+                category: document.getElementById('category').value
+            };
+
+            fetch('/add-item', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert('Item added successfully!');
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        });
+    </script> -->
+    <form id="portfolioForm">
+        <label for="columns">Select Columns:</label>
+        <select id="columns" name="columns" required>
+            <option value="1">1 Column</option>
+            <option value="2">2 Columns</option>
+            <option value="3">3 Columns</option>
+        </select>
+        <input type="text" id="src" name="src" placeholder="Image Name" required>
+        <input type="text" id="caption" name="caption" placeholder="caption" required>
+        <input type="text" id="category" name="category" placeholder="Category" required>
+        <button type="submit">Add Item</button>
+    </form>
+    
+    <script>
+        document.getElementById('portfolioForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent the default form submission
+    
+            const columns = document.getElementById('columns').value;
+            // const classu = document.getElementById('class').value;
+            const src = document.getElementById('src').value;
+            const caption = document.getElementById('caption').value;
+            const category = document.getElementById('category').value;
+    
+             // Determine the class based on the selected columns
+                 let gridClass = 'grid-item'; // Default class
+                 if (columns === '2') {
+                 gridClass = 'grid-item grid-item2';
+                } else if (columns === '3') {
+                gridClass = 'grid-item grid-item3';
+                    }
+
+
+            // Create a new item object
+            const newItem = {
+                class: gridClass,
+                // class: classu,
+                src: src,
+                caption: caption,
+                category: category
+            };
+    
+            // Send the new item to the server via POST request
+            fetch('/add-item', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(newItem)
+            })
+            .then(response => response.text())
+            .then(result => {
+                // Show the success message in an alert
+                alert(result);
+    
+                // Clear the input fields
+                document.getElementById('columns').value = '1'; // Reset to default
+                // document.getElementById('class').value = '';
+                document.getElementById('src').value = '';
+                document.getElementById('caption').value = '';
+                document.getElementById('category').value = '';
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred while adding the item.');
+            });
+        });
+    </script>
+    
+
+</body>
+</html>
